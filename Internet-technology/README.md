@@ -1,26 +1,30 @@
-# 互联网技术及其应用实践
+# 互联网技术及应用实践
 
-- [互联网技术及其应用实践](#互联网技术及其应用实践)
+- [互联网技术及应用实践](#互联网技术及应用实践)
   - [目录结构](#目录结构)
   - [项目环境](#项目环境)
     - [系统环境](#系统环境)
     - [安装 MinGW-w64.](#安装-mingw-w64)
     - [开始 Coding](#开始-coding)
   - [Project1 - 传输层实验](#project1---传输层实验)
+    - [快速开始](#快速开始)
     - [实验内容](#实验内容)
     - [Q&A](#qa)
+    - [Reference](#reference)
 
 ## 目录结构
 ```
   - Internet-technology   # 根目录
     - project1            # Project1 - 传输层实验
         - example         # 本课的样例代码
+        - udp-client.c    # Task2
+        - udp-server.c    # Task2
     //- project2 ...      # 未完待续
 ```
 ## 项目环境
 非必须。如果电脑上没有写 c 语言的环境，则执行下列步骤。
 ### 系统环境
-windows10. 因为示例代码基于 winsock.
+windows10. 
 ### 安装 MinGW-w64.
 打开 [官网](https://www.mingw-w64.org/downloads/)，选 MingW-W64-builds 下载。
 
@@ -45,11 +49,19 @@ Clone 本仓库并在 vscode 中打开。
 打开示例代码，ctrl + F5 运行。
 
 ## Project1 - 传输层实验
+### 快速开始
+Clone 本项目，确保安装 MinGw 后，执行以下命令编译。
+```shell
+cd `/Internet-technology/project1` 
+
+mingw32-make
+```
+之后会生成 `udp-server.exe` 和 `udp-client.exe` ，按顺序执行即可。
 ### 实验内容
-- [x] 调试 client.c, server.c, ping.c 和 traceroute.c. 
-- [ ] 编写基于 UDP 的 client.c 和 server.c.
-- [ ] 修改 ping.c 使其支持 ping 攻击。
-- [ ] 基于 Raw Sockets, 编写基于 UDP 的 traceroute 程序。
+- [x] Task1: 调试 client.c, server.c, ping.c 和 traceroute.c. 
+- [x] Task2: 编写基于 UDP 的 client.c 和 server.c.
+- [ ] Task3: 修改 ping.c 使其支持 ping 攻击。
+- [ ] Task4: 基于 Raw Sockets, 编写基于 UDP 的 traceroute 程序。
 ### Q&A
 * 为什么编译失败？  
   尝试编译时加入参数 "-lws2_32".
@@ -59,3 +71,11 @@ Clone 本仓库并在 vscode 中打开。
 
 * traceroute 时，中间的路由全部 receive timeout.  
  关闭本机防火墙.
+### Reference
+| Description      | Link |
+| ----------- | ----------- |
+| socket function      | https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-socket       |
+| bind function   | https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-bind        |
+| recvfrom function | https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-recvfrom |
+| sendto function | https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-sendto  |
+| | |
