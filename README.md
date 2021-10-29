@@ -10,13 +10,14 @@
 <img src="https://img.shields.io/github/downloads/xuwhao/neu-cs-master/total?color=ea8f14&label=users" alt="">
 <img src="https://img.shields.io/github/license/xuwhao/neu-cs-master" alt="">
 </p>
-<!-- <p align="center"><a href="#安装">English Version</a> | <a href="https://github.com/xuwhao/neu-cs-master/issues/new">反馈</a></p> -->
+<p align="center"><a href="https://gitee.com/xuwhao/neu-cs-master">Gitee Mirror</a>  |  <a href="https://github.com/xuwhao/neu-cs-master">Browse on Github</a></p>
 
 # Attention here!
 This repository is working in progress...  
 
 如果本项目对你有所帮助，star this repo please.
 
+若你在 Gitee 页面看到本仓库，请尽量尝试一些科学的、能够浏览真正的互联网的技术手段后在 [GitHub](https://github.com/xuwhao/neu-cs-master) 浏览本仓库。
 ## 快速开始
 Clone 本项目，或前往 [Release 页面](https://github.com/xuwhao/neu-cs-master/releases) 下载源代码。配置对应课程设计所需环境后开始学习。
 
