@@ -19,6 +19,7 @@
         - example         # 本课的样例代码
         - udp-client.c    # Task2
         - udp-server.c    # Task2
+        - ping.c          # Task3
     //- project2 ...      # 未完待续
 ```
 ## 项目环境
@@ -52,15 +53,15 @@ Clone 本仓库并在 vscode 中打开。
 ### 快速开始
 Clone 本项目，确保安装 MinGw 后，执行以下命令编译。
 ```shell
-cd `/Internet-technology/project1` 
+cd /Internet-technology/project1
 
 mingw32-make
 ```
-之后会生成 `udp-server.exe` 和 `udp-client.exe` ，按顺序执行即可。
+之后会生成 `udp-server.exe`，`udp-client.exe`，和 `ping.exe`，即可执行相应程序。 其中 `ping.exe` 需要管理员权限。
 ### 实验内容
 - [x] Task1: 调试 client.c, server.c, ping.c 和 traceroute.c. 
 - [x] Task2: 编写基于 UDP 的 client.c 和 server.c.
-- [ ] Task3: 修改 ping.c 使其支持 ping 攻击。
+- [x] Task3: 修改 ping.c 使其支持 ping 攻击。
 - [ ] Task4: 基于 Raw Sockets, 编写基于 UDP 的 traceroute 程序。
 ### Q&A
 * 为什么编译失败？  
@@ -78,4 +79,4 @@ mingw32-make
 | bind function   | https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-bind        |
 | recvfrom function | https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-recvfrom |
 | sendto function | https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-sendto  |
-| | |
+| ping in c| https://www.geeksforgeeks.org/ping-in-c/ |

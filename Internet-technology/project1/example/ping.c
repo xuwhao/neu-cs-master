@@ -1,4 +1,3 @@
-#include "stdio.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <winsock2.h>
@@ -7,6 +6,7 @@
 #define ICMP_ECHO 8      // 请求回显 ping请求 请求回显8
 #define ICMP_ECHOREPLY 0 // 回显应答0
 #define ICMP_MIN 12      // minimum 12 byte icmp message(just header)
+
 // The IP header  20bytes
 typedef struct iphdr {
     unsigned char h_len : 4;       // length of the header
@@ -20,6 +20,7 @@ typedef struct iphdr {
     unsigned int sourceIP;
     unsigned int destIP;
 } IpHeader;
+
 // ICMP header  12 bytes
 typedef struct _ihdr {
     BYTE i_type;
@@ -29,18 +30,22 @@ typedef struct _ihdr {
     USHORT i_seq;
     ULONG timestamp; // This is not the std header. It's reserved for time.
 } IcmpHeader;
+
 #define STATUS_FAILED 0xFFFF
 #define MAX_PACKET 1024
 #define xmalloc(s) HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, (s))
 #define xfree(p) HeapFree(GetProcessHeap(), 0, (p))
+
 USHORT checksum(USHORT *, int);
 void fill_icmp_head(char *);
 void decode_resp(char *, int, struct sockaddr_in *);
+
 void Usage(char *progname) {
     fprintf(stderr, "Usage:\n");
     fprintf(stderr, "%s <host>\n", progname);
     ExitProcess(STATUS_FAILED);
 }
+
 int main(int argc, char **argv) {
     WSADATA wsaData;
     SOCKET sockRaw;
@@ -119,6 +124,7 @@ int main(int argc, char **argv) {
     WSACleanup(); // clean up ws2_32.dll
     return 0;
 }
+
 void fill_icmp_head(char *icmp_data) {
     IcmpHeader *icmp_hdr;
     icmp_hdr = (IcmpHeader *)icmp_data;
@@ -128,8 +134,8 @@ void fill_icmp_head(char *icmp_data) {
     icmp_hdr->i_id = (USHORT)GetCurrentProcessId();
     icmp_hdr->i_seq = 0;
 }
-// The response is an IP packet. We need decode the IP header to locate the ICMP
-// data
+
+// The response is an IP packet. We need decode the IP header to locate the ICMP data
 void decode_resp(char *buf, int bytes, struct sockaddr_in *from) {
     IpHeader *iphdr;
     IcmpHeader *icmphdr;
@@ -153,6 +159,7 @@ void decode_resp(char *buf, int bytes, struct sockaddr_in *from) {
     printf(" time: %d ms ", GetTickCount() - icmphdr->timestamp);
     printf("\n");
 }
+
 USHORT checksum(USHORT *buffer, int size) {
     unsigned long cksum = 0;
     while (size > 1) {
