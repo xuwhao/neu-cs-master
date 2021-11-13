@@ -15,13 +15,14 @@
 ## 目录结构
 
 ```shell
-  - Internet-technology   # 根目录
-    - project1            # Project1 - 传输层实验
-        - example         # 本课的样例代码
-        - udp-client.c    # Task2
-        - udp-server.c    # Task2
-        - ping.c          # Task3
-    //- project2 ...      # 未完待续
+  - Internet-technology    # 根目录
+    - project1             # Project1 - 传输层实验
+        - example          # 本课的样例代码
+        - udp-client.c     # Task2
+        - udp-server.c     # Task2
+        - ping.c           # Task3
+        - traceroute-udp.c # Task4
+    //- project2 ...       # 未完待续
 ```
 
 ## 项目环境
@@ -69,7 +70,7 @@ cd /Internet-technology/project1
 mingw32-make
 ```
 
-之后会生成 `udp-server.exe`，`udp-client.exe`，和 `ping.exe`，即可执行相应程序。 其中 `ping.exe` 需要管理员权限。
+之后会生成 `udp-server.exe`，`udp-client.exe`， `ping.exe` 和 `traceroute-udp.exe`，即可执行相应程序。 其中 `ping.exe` 和 `traceroute-udp.exe` 需要管理员权限。
 
 ### 实验内容
 
