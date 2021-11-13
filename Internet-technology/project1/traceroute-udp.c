@@ -30,6 +30,7 @@ typedef struct iphdr {
     unsigned int sourceIP;         // Source IP
     unsigned int destIP;           // Destination IP
 } IpHeader;
+
 // ICMP header
 typedef struct _ihdr {
     BYTE i_type; // ICMP message type
@@ -40,6 +41,16 @@ typedef struct _ihdr {
     // This is not the std header, but we reserve space for time
     ULONG timestamp;
 } IcmpHeader;
+
+typedef struct UdpHeader
+{
+unsigned short source_port;
+unsigned short dest_port;
+unsigned short length;
+unsigned short checksum;
+unsigned long data; 
+}UdpHeader;
+
 #define DEF_PACKET_SIZE 32
 #define MAX_PACKET 1024
 // Function: usage
@@ -83,15 +94,19 @@ int decode_resp(char *buf, int bytes, SOCKADDR_IN *from, int ttl) {
                                   sizeof(struct in_addr));
         if (lpHostent != NULL)
             printf("%2d  %s (%s)\n", ttl, lpHostent->h_name, inet_ntoa(inaddr));
-        return 1;
+        return 0;
         break;
     case ICMP_TIMEOUT: // Response from router along the way
         printf("%2d  %s\n", ttl, inet_ntoa(inaddr));
         return 0;
         break;
     case ICMP_DESTUNREACH: // Can't reach the destination at all
-        printf("%2d  %s  reports: Host is unreachable\n", ttl,
-               inet_ntoa(inaddr));
+        // printf("%2d  %s  reports: Host is unreachable\n", ttl,
+        //        inet_ntoa(inaddr));
+        lpHostent = gethostbyaddr((const char *)&from->sin_addr, AF_INET,
+                                  sizeof(struct in_addr));
+        if (lpHostent != NULL)
+            printf("%2d  %s (%s) received final reply ICMP_DESTUNREACH\n", ttl, lpHostent->h_name, inet_ntoa(inaddr));
         return 1;
         break;
     default:
@@ -134,14 +149,26 @@ void fill_icmp_data(char *icmp_data, int datasize) {
     memset(datapart, 'E', datasize - sizeof(IcmpHeader));
 }
 
+void fill_udp_data(char *udp_data, int datasize){
+    UdpHeader *udp_header;
+    char *datapart;
+    udp_header = (UdpHeader *) udp_data;
+    udp_header->checksum = 0;
+    udp_header->length = 8;
+    udp_header->source_port=htons(33434);
+    udp_header->dest_port=htons(33434);
+    //datapart = udp_data + sizeof(UdpHeader);
+//    memset(datapart, 'E', datasize - sizeof(UdpHeader));
+}
+
 int main(int argc, char **argv) {
     WSADATA wsd;
     SOCKET sockRaw;
     HOSTENT *hp = NULL;
-    SOCKADDR_IN dest, from;
-    int ret, datasize, fromlen = sizeof(from), timeout, done = 0, maxhops,
+    SOCKADDR_IN dest;
+    int ret, datasize, timeout, done = 0, maxhops,
                        ttl = 1;
-    char *icmp_data, *recvbuf;
+    char *udp_data, *recvbuf;
     BOOL bOpt;
     USHORT seq_no = 0;
     // Initialize the Winsock2 DLL
@@ -152,30 +179,31 @@ int main(int argc, char **argv) {
     }
     if (argc < 2) {
         argc = 2;
-      //  argv[1] = "mail.neu.edu.cn";
-        argv[1] = "xuwhao.top";
+        argv[1] = "mail.neu.edu.cn";
+        //argv[1] = "xuwhao.top";
     }
     if (argc == 3)
         maxhops = atoi(argv[2]);
     else
         maxhops = MAX_HOPS;
-    /* Create a raw socket that will be used to send the ICMP packets to the
+
+    /* Create a raw socket that will be used to send the UDP packets to the
      * remote host you want to ping */
-    sockRaw = WSASocket(AF_INET, SOCK_RAW, IPPROTO_ICMP, NULL, 0,
+    sockRaw = WSASocket(AF_INET, SOCK_RAW, IPPROTO_UDP, NULL, 0,
                         WSA_FLAG_OVERLAPPED);
     if (sockRaw == INVALID_SOCKET) {
         printf("WSASocket() failed: %d\n", WSAGetLastError());
         ExitProcess(-1);
     }
     // Set the receive and send timeout values to a second
-    timeout = 1000;
+    timeout = 5000;
     ret = setsockopt(sockRaw, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout,
                      sizeof(timeout));
     if (ret == SOCKET_ERROR) {
         printf("setsockopt(SO_RCVTIMEO) failed: %d\n", WSAGetLastError());
         return -1;
     }
-    timeout = 1000;
+    timeout = 5000;
     ret = setsockopt(sockRaw, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout,
                      sizeof(timeout));
     if (ret == SOCKET_ERROR) {
@@ -187,6 +215,7 @@ int main(int argc, char **argv) {
     /* We need to resolve the host's ip address.  We check to see if it is an
      * actual Internet name versus an dotted decimal IP address string.*/
     dest.sin_family = AF_INET;
+    dest.sin_port = htons(33434);
     hp = gethostbyname(argv[1]);
 
     if (hp)
@@ -200,10 +229,10 @@ int main(int argc, char **argv) {
     datasize = DEF_PACKET_SIZE;
     datasize += sizeof(IcmpHeader);
     // Allocate the sending and receiving buffers for ICMP packets
-    icmp_data =
+    udp_data =
         (char *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, MAX_PACKET);
     recvbuf = (char *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, MAX_PACKET);
-    if ((!icmp_data) || (!recvbuf)) {
+    if ((!udp_data) || (!recvbuf)) {
         printf("HeapAlloc() failed %d\n", GetLastError());
         return -1;
     }
@@ -217,22 +246,58 @@ int main(int argc, char **argv) {
     }
     // Here we are creating and filling in an ICMP header that is the core of
     // trace route.
-    memset(icmp_data, 0, MAX_PACKET);
-    fill_icmp_data(icmp_data, datasize);
-    printf("\nTracing route to %s over a maximum of %d hops:\n\n", argv[1],
+    memset(udp_data, 0, MAX_PACKET);
+    //fill_icmp_data(icmp_data, datasize);
+    fill_udp_data(udp_data, datasize);
+    printf("\nTracing route to %s over a maximum of %d hops using UDP packets:\n\n", argv[1],
            maxhops);
+
+    // create socket to receive ICMP reply
+    SOCKET sock = WSASocket(AF_INET, SOCK_RAW, IPPROTO_ICMP, NULL, 0,
+                        WSA_FLAG_OVERLAPPED);
+    
+    SOCKADDR_IN server_addr, from;
+    int fromlen = sizeof(from);
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+    server_addr.sin_port = htons(33434);
+   
+    // Set the receive and send timeout values to a second
+    timeout = 1000;
+    ret = setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout,
+                     sizeof(timeout));
+    if (ret == SOCKET_ERROR) {
+        printf("setsockopt(SO_RCVTIMEO) failed: %d\n", WSAGetLastError());
+        return -1;
+    }
+    timeout = 1000;
+    ret = setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout,
+                     sizeof(timeout));
+    if (ret == SOCKET_ERROR) {
+        printf("setsockopt(SO_SNDTIMEO) failed: %d\n", WSAGetLastError());
+        return -1;
+    }
+
+    // bind to the port 33434
+    int err = bind(sock, (SOCKADDR *)&server_addr, sizeof(SOCKADDR));
+     if (err != 0) {
+        fprintf(stderr, "bind with error: %d\n", WSAGetLastError());
+        return 3;
+    }
+
     for (ttl = 1; ((ttl < maxhops) && (!done)); ttl++) {
         int bwrote;
         // Set the time to live option on the socket
         set_ttl(sockRaw, ttl);
-        // Fill in some more data in the ICMP header
-        ((IcmpHeader *)icmp_data)->i_cksum = 0;
-        ((IcmpHeader *)icmp_data)->timestamp = GetTickCount();
-        ((IcmpHeader *)icmp_data)->i_seq = seq_no++;
-        ((IcmpHeader *)icmp_data)->i_cksum =
-            checksum((USHORT *)icmp_data, datasize);
-        // Send the ICMP packet to the destination
-        bwrote = sendto(sockRaw, icmp_data, datasize, 0, (SOCKADDR *)&dest,
+        // Fill in some more data in the UDP header
+        ((UdpHeader *)udp_data)->length = 8;
+        ((UdpHeader *)udp_data)->dest_port = htons(33434);
+        ((UdpHeader *)udp_data)->source_port = htons(33434);
+        ((UdpHeader *)udp_data)->checksum =
+            checksum((USHORT *)udp_data, datasize);
+        // Send the UDP packet to the destination
+        bwrote = sendto(sockRaw, udp_data, datasize, 0, (SOCKADDR *)&dest,
                         sizeof(dest));
         if (bwrote == SOCKET_ERROR) {
             if (WSAGetLastError() == WSAETIMEDOUT) {
@@ -243,7 +308,7 @@ int main(int argc, char **argv) {
             return -1;
         }
         // Read a packet back from the destination or a router along the way.
-        ret = recvfrom(sockRaw, recvbuf, MAX_PACKET, 0,
+        ret = recvfrom(sock, recvbuf, MAX_PACKET, 0,
                        (struct sockaddr *)&from, &fromlen);
         if (ret == SOCKET_ERROR) {
             if (WSAGetLastError() == WSAETIMEDOUT) {
@@ -259,7 +324,7 @@ int main(int argc, char **argv) {
         Sleep(1000);
     }
     HeapFree(GetProcessHeap(), 0, recvbuf);
-    HeapFree(GetProcessHeap(), 0, icmp_data);
+    HeapFree(GetProcessHeap(), 0, udp_data);
     printf("Press [Enter] to end...");
     getchar();
     return 0;
