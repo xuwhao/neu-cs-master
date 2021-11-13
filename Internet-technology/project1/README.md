@@ -6,7 +6,11 @@
     - [(非必须) 系统环境](#非必须-系统环境)
     - [(非必须) 安装 MinGW-w64](#非必须-安装-mingw-w64)
     - [(非必须) 开始 Coding](#非必须-开始-coding)
+<<<<<<< HEAD:Internet-technology/project1/README.md
   - [(非必须) 快速开始](#非必须-快速开始)
+=======
+  - [[非必须] 快速开始](#非必须-快速开始)
+>>>>>>> 2e19ea4 (Internet-technology(project2): code and docs .):Internet-technology/README.md
   - [实验内容](#实验内容)
   - [Q&A](#qa)
   - [Reference](#reference)
@@ -56,7 +60,11 @@ Clone 本仓库并在 vscode 中打开。
 
 打开示例代码，ctrl + F5 运行。
 
+<<<<<<< HEAD:Internet-technology/project1/README.md
 ## (非必须) 快速开始
+=======
+## [非必须] 快速开始
+>>>>>>> 2e19ea4 (Internet-technology(project2): code and docs .):Internet-technology/README.md
 
 Clone 本项目，确保安装 MinGw 后，执行以下命令编译。
 
