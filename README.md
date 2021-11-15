@@ -32,7 +32,7 @@ Clone 本项目，或前往 [Release 页面](https://github.com/xuwhao/neu-cs-ma
     * [x] Task3: 修改 ping.c 使其支持 ping 攻击。
     * [x] Task4: 基于 Raw Sockets, 编写基于 UDP 的 traceroute 程序。
   * Project2 - 应用层实验
-    * [ ] Task1: 实现 Email 客户端或一个 Web 服务器。
+    * [x] Task1: 实现 Email 客户端或一个 Web 服务器。
 * ...
 
 ## Contributing to NEU-CS-Master

@@ -1,4 +1,4 @@
-# 实验二： 简易多线程静态 HTTP 服务器
+# 实验二 应用层实验：简易多线程静态 HTTP 服务器
 
 ## 功能
 
@@ -16,7 +16,7 @@
 
 [![IgiBDJ.md.png](https://z3.ax1x.com/2021/11/15/IgiBDJ.md.png)](https://imgtu.com/i/IgiBDJ)
 
-其效果等效与本人用 Ngnix 部署的个人网站，浏览请 [点击此处](https://www.xuwhao.top)。
+其效果等效于本人用 Nginx 部署的个人网站，浏览请 [点击此处](https://www.xuwhao.top)。
 
 ## 安装
 

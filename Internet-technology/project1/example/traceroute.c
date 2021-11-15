@@ -152,8 +152,8 @@ int main(int argc, char **argv) {
     }
     if (argc < 2) {
         argc = 2;
-      //  argv[1] = "mail.neu.edu.cn";
-        argv[1] = "xuwhao.top";
+        argv[1] = "mail.neu.edu.cn";
+      //  argv[1] = "xuwhao.top";
     }
     if (argc == 3)
         maxhops = atoi(argv[2]);
