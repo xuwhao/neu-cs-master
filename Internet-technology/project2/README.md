@@ -3,10 +3,11 @@
 ## 功能
 
 * 基于线程池的多线程
-* 支持 HTTP GET 请求 (基于 RFC 2616)
+* 支持 HTTP GET 请求
 * 支持静态资源内容请求
 * MIME 类型支持
-* 支持 200, 206 和 404 HTTP Response Status Code
+* 支持 200 (OK), 206 (Partial Content) 和 404 (Not Found) HTTP Response Status Code
+* 支持 single Range HTTP GET Request (RFC 2616)
 
 ## 功能展示
 
