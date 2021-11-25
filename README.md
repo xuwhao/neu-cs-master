@@ -33,6 +33,8 @@ Clone 本项目，或前往 [Release 页面](https://github.com/xuwhao/neu-cs-ma
     * [x] Task4: 基于 Raw Sockets, 编写基于 UDP 的 traceroute 程序。
   * Project2 - 应用层实验
     * [x] Task1: 实现 Email 客户端或一个 Web 服务器。
+* [分布式系统与实践](https://github.com/xuwhao/neu-cs-master/tree/main/dos)
+  * [x] 实现一个简单的 MapReduce 程序（全局排序）
 * ...
 
 ## Contributing to NEU-CS-Master
