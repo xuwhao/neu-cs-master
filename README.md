@@ -2,7 +2,7 @@
 <p align="center">
     <img src="https://z3.ax1x.com/2021/10/28/5qHicj.jpg"  alt="ipgw"/>
 </p>
-<h3 align="center">东北大学计算机硕士课程设计及资源</h3>
+<h3 align="center">东北大学计算机硕士课设</h3>
 <p align="center">
 <img src="https://img.shields.io/github/v/release/xuwhao/neu-cs-master" alt="">
 <img src="https://img.shields.io/github/issues/xuwhao/neu-cs-master?color=rgb%2877%20199%20166%29" alt="">
@@ -10,18 +10,6 @@
 <img src="https://img.shields.io/github/license/xuwhao/neu-cs-master" alt="">
 </p>
 <p align="center"><a href="https://gitee.com/xuwhao/neu-cs-master">Gitee Mirror</a>  |  <a href="https://github.com/xuwhao/neu-cs-master">Browse on Github</a></p>
-
-## Attention here
-
-This repository is working in progress...  
-
-如果本项目对你有所帮助，star this repo please.
-
-若你在 Gitee 页面看到本仓库，请尽量尝试一些科学的、能够浏览真正的互联网的技术手段后在 [GitHub](https://github.com/xuwhao/neu-cs-master) 浏览本仓库。
-
-## 快速开始
-
-Clone 本项目，或前往 [Release 页面](https://github.com/xuwhao/neu-cs-master/releases) 下载源代码。配置对应课程设计所需环境后开始学习。
 
 ## 完成情况
 
@@ -39,7 +27,7 @@ Clone 本项目，或前往 [Release 页面](https://github.com/xuwhao/neu-cs-ma
 
 ## Contributing to NEU-CS-Master
 
-如果有本项目遗漏的课程资源，欢迎提 Pull Request.
+如果有本项目遗漏的课程资源，欢迎提 PR.
 
 ## License
 
